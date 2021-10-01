@@ -1,0 +1,48 @@
+{
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/q-agent-pm/src",
+  "monorepo": true,
+  "root": "apps/q-agent-pm",
+  "compilerOptions": {
+    "webpack": true,
+    "tsConfigPath": "apps/q-agent-pm/tsconfig.app.json"
+  },
+  "projects": {
+    "q-agent-pm": {
+      "type": "application",
+      "root": "apps/q-agent-pm",
+      "entryFile": "main",
+      "sourceRoot": "apps/q-agent-pm/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/q-agent-pm/tsconfig.app.json"
+      }
+    },
+    "tenant": {
+      "type": "application",
+      "root": "apps/tenant",
+      "entryFile": "main",
+      "sourceRoot": "apps/tenant/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/tenant/tsconfig.app.json"
+      }
+    },
+    "system": {
+      "type": "application",
+      "root": "apps/system",
+      "entryFile": "main",
+      "sourceRoot": "apps/system/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/system/tsconfig.app.json"
+      }
+    },
+    "database": {
+      "type": "library",
+      "root": "libs/database",
+      "entryFile": "index",
+      "sourceRoot": "libs/database/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/database/tsconfig.lib.json"
+      }
+    }
+  }
+}

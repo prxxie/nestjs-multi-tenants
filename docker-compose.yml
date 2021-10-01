@@ -1,0 +1,78 @@
+version: '3.7'
+
+services:
+
+  system-app:
+    build:
+      context: .
+      dockerfile: apps/system/Dockerfile
+      target: development
+      args:
+        NODE_ENV: development
+    image: "ttm.co/system-app:latest"
+    restart: always
+    env_file: .env
+    networks:
+      - webnet
+    volumes:
+      - .:/nest
+      - /nest/node_modules
+    depends_on:
+      - mariadb
+      # - redis
+    ports:
+      - ${PORT_SYSTEM_APP}:3000
+      - ${PORT_DEBUG_SYSTEM_APP}:9229
+
+  tenant-app:
+    build:
+      context: .
+      dockerfile: apps/tenant/Dockerfile
+      target: development
+      args:
+        NODE_ENV: development
+    image: "ttm.co/tenant-app:latest"
+    restart: always
+    env_file: .env
+    networks:
+      - webnet
+    volumes:
+      - .:/nest
+      - /nest/node_modules
+    depends_on:
+      - mariadb
+      # - redis
+    ports:
+      - ${PORT_TENANT_APP}:3000
+      - ${PORT_DEBUG_TENANT_APP}:9229
+
+  mariadb:
+    image: mariadb
+    restart: always
+    networks:
+      - webnet
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE_NAME}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/mysql
+    ports:
+      - 3306:3306
+
+  adminer:
+    image: adminer
+    restart: always
+    networks:
+      - webnet
+    ports:
+      - ${ADMINER_PORT}:8080
+
+networks:
+  webnet:
+    name: q-agent-pm-webnet
+
+volumes:
+  dbdata:
+    name: q-agent-pm-data
